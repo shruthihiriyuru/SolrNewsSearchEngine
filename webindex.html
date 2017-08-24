@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Web Search</title>
+        <style>
+            body {
+                height:100%;
+                text-align: center;
+                background-color: white
+            }
+            td {
+                padding-left: 100px
+            }
+            a:link {
+                text-decoration: none;
+            }
+            #suggestTable {
+                text-align:left;
+                margin-left: 565px;
+            }
+        </style>
+    </head>
+    <body ng-app="submitExample" ng-controller="IndexController" ng-init="init()">
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+        <script src="webindex.js"></script>
+        
+        <h1>Search Query</h1>        
+        <form ng-submit="submit()">
+            <input type="text" id= "input1" ng-model="text" name="text" autocomplete="off" list="json-datalist" ng-change="suggest()" ng-trim="false"/>
+            <table id="suggestTable" ng-show="suggestions && suggestions.length > 0" class=" table table-hover table-responsive" style="empty-cells: hide;border:1px solid rgba(81, 203, 255, 1)">
+                <thead></thead>
+                <tbody style="display:block; margin-left: 0px" 
+                       ng-repeat="suggestion in suggestions">
+                    <tr style="margin-left: 0px">
+                        <td ng-click="setSelected(suggestion.term)" style="border:none; margin-left: 0px; text-align:left;padding-left:0px; min-width:150px">{{suggestion.term}}</td> 
+                    </tr>
+                </tbody>
+            </table>
+            
+            <input type="submit" id="submit" value="Submit"/>
+            <br/> <br/>
+            <label><input type="radio" name="1" ng-model="radioValue" ng-checked="true" value="lucene"/> Lucene Results</label>
+            <label><input type="radio" name="2" ng-model="radioValue" value="pagerank"/> PageRank Results</label>
+        </form>
+        
+        <div style="text-align:left;padding-left: 100px">
+            <h3 id="spellcorrect"></h3>
+        </div>
+        <table id="resultsTable" class="resultTable table table-hover table-responsive scrollable">
+            <thead></thead>
+            <tbody style="text-align:left;color:black" ng-repeat="result in results">
+                <tr class="blank_row">
+                    <td >&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" ng-init="url = getURL(result.id)"><a href="{{url}}" target="_blank"><b>{{result.title[0]}}</b></a></td> 
+                </tr>
+                <tr>
+                    <td class="col-md-1"><a style="color:green" 
+                        href="{{url}}"                      
+                        target="_blank">{{url}}</a></td>
+                </tr>
+                <tr>
+                    <td class="col-md-1">{{result.id}}</td> 
+                </tr>
+                <tr>
+                    <td class="col-md-1">{{result.description[0]}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
